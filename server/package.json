@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ArnaudoAnnA/SE2_post_office/issues"
   },
-  "homepage": "https://github.com/ArnaudoAnnA/SE2_post_office#readme"
+  "homepage": "https://github.com/ArnaudoAnnA/SE2_post_office#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
