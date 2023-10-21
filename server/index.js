@@ -3,8 +3,12 @@
 const express = require("express");
 const app = express();
 const config = require("./config");
+const mysql = require('mysql2/promise');
 
-app.listen(config.db.port, () => {
-    console.log(`Server app listening at ${config.db.host}:${config.db.port}`);
+let connection;
+
+app.listen(config.web_server.port, async () => {
+    connection = await mysql.createConnection(config.db);
+    console.log(`Server app listening at ${config.web_server.host}:${config.web_server.port}`);
   });
 
