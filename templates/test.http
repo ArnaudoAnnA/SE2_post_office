@@ -1,0 +1,62 @@
+
+## Execute Log In
+POST http://localhost:3000/api/sessions HTTP/1.1
+content-type: application/json
+
+{
+    "username": "marioRossi@gmail.com",
+    "password": "pass1"
+}
+
+###
+
+## Checking if user is still logged-in.
+GET http://localhost:3000/api/sessions/current HTTP/1.1
+
+###
+
+## Execute Log Out.
+DELETE http://localhost:3000/api/sessions/current HTTP/1.1
+
+###
+
+
+
+# ---------------------------------------------------------------------
+
+
+
+
+## Retrieving the name of the website
+GET http://localhost:3000/api/websiteName HTTP/1.1
+
+###
+
+## Updating the name of the website
+PUT http://localhost:3000/api/updateWebsiteName HTTP/1.1
+content-type: application/json
+
+{
+    "newName": "New WebSite"
+}
+
+###
+
+
+
+# ---------- Wrong Requests -------------
+
+## Updating the name of the website with an empty one
+PUT http://localhost:3000/api/updateWebsiteName HTTP/1.1
+content-type: application/json
+
+{
+    "newName": "  "
+}
+
+###
+
+## Get page by an ID that doesn't exist
+GET http://localhost:3000/api/pages/10 HTTP/1.1
+
+###

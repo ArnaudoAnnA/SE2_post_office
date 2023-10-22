@@ -1,0 +1,10 @@
+#### server URL = http://localhost:3000/
+
+#The row corresponding to the specifyed clientNumber must disappear from
+#queues table, and it must appear in statistics table with today's date
+PUT http://localhost:3000/API/client_served HTTP/1.1
+content-type: application/json
+
+{
+    "ClientNumber": 10
+}
