@@ -9,13 +9,20 @@ import API from './API'
 
 function App() {
   const [row, setRow] = useState([])
+  const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      // Decrementa il tempo rimanente di 1 secondo
+      setRefresh(true);
+    }, 5000);
+    console.log("Ciao")
     API.get_assigned_clients()
       .then((q) => {
         setRow(q);
+        setRefresh(false);
       })
-  }, []);
+  }, [refresh]);
   
 
   return (
