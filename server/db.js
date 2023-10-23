@@ -72,3 +72,25 @@ module.exports.add_client_to_statistics = (row) =>
   });
 }
 
+
+// Get assigned clients
+module.exports.get_assigned_clients = () =>
+{
+  const query = 'SELECT Q.ClientNumber as clientNumber, S.Description as serviceType, Q.CounterID as counterID ' +
+                'FROM `queues` as Q , configuration as C, service as S ' + 
+                'WHERE Q.CounterID = C.CounterID AND C.ServiceID = S.ServiceID';
+  return new Promise((resolve, reject) =>
+  {
+    connection.execute(query, (err, result) =>
+    {
+      if (err) {reject(err); return}
+      console.log(result)
+      const assignedClients = result.map(row => ({
+        clientNumber: row.clientNumber,
+        serviceType: row.serviceType,
+        counterID: row.counterID
+      }));
+      resolve(assignedClients);
+    });
+  });
+}

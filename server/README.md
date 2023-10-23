@@ -41,3 +41,28 @@ validate counterID >> look for the first client on the longest queue associated 
     }
     ```
   - Error responses: `500 Internal Server Error` (generic error), `400 Bad request` (invalid argument), `404 Not Found` (not present or unavailable)
+
+#### GET ASSIGNED CLIENTS
+
+Get all the clients that are assigned to a counter
+
+- GET `/API/get_assigned_clients`
+  - Response: `200 OK` (success)
+  - Response body:
+  ```json
+    {
+      "clients": [
+        {
+          "clientNumber": 3,
+          "serviceType": "Shipping",
+          "counterID": 3
+        },
+        {
+          "clientNumber": 4,
+          "serviceType": "Bills",
+          "counterID": 1
+        }
+      ]
+    }
+    ```
+  - Error responses: `500 Internal Server Error` (generic error), `404 Not Found` (not present or unavailable)

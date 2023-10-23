@@ -55,6 +55,16 @@ app.put(`/API/client_served`, async (req, res) =>
   return res.status(200).end();
 });
 
+app.get(`/API/get_assigned_clients`, async (req, res) => {
+  await db.get_assigned_clients()
+    .then(result => {
+      return res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(`ERROR in request: ${err}`);
+      return res.status(500).end();
+    });
+});
 
 app.listen(config.web_server.port, async () => {
     console.log(`Server app listening at ${config.web_server.host}:${config.web_server.port}`);
