@@ -104,39 +104,62 @@ module.exports.get_counter_services = (CounterID) =>
 
 //resolve(int) in case of success
 //reject(message) in case of failure
+//we need to count the number of rows in queues that contain the specified ServiceID
 module.exports.get_service_queue_len = (ServiceID) =>
 {
+  const query = 'SELECT count("x") FROM `queues` WHERE `ServiceID` = ?';
   return new Promise((resolve, reject) =>
   {
-    //TO DO
-  });
+    connection.execute(query, [ServiceID], (err, result) =>
+    {
+      console.log(result);
+      if (err) reject(err);
+      if (!result || result.length <1) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
+      resolve(result);
+    })
+  })
 }
 
 //resolve(ClientNumber) in case of success
 //reject(message) in case of failure
+//From the rows with the specified service ID, we need to fetch the one with the lowest ClientNumber
 module.exports.get_first_client_from_queue  = (ServiceID) =>
 {
+  const query = 'SELECT `ClientNumber` FROM `queues` WHERE `ServiceID` = ? ORDER BY `ClientNumber` LIMIT 1' ;
   return new Promise((resolve, reject) =>
   {
-    //TO DO
-  });
+    connection.execute(query, [ServiceID], (err, result) =>
+    {
+      console.log(result);
+      if (err) reject(err);
+      if (!result) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
+      resolve(result);
+    })
+  })
 }
 
 //resolve(void) in case of success 
 //reject(message) in case of failure 
+//we need to update the CounterID column of the row with the specified ClientNumber
 module.exports.assign_client_to_counter = (ClientNumber, CounterID) =>
 {
+  const query = 'UPDATE `queues` SET ´CounterID´ = ? WHERE ´ClientNumber´ = ?';
   return new Promise((resolve, reject) =>
   {
-    //TO DO
-  });
+    connection.execute(query, [CounterID, ClientNumber], (err, result) =>
+    {
+      console.log(result);
+      if (err) reject(err);
+      resolve();
+    })
+  })
 }
 
 
 // Get assigned clients
 module.exports.get_assigned_clients = () =>
 {
-  const query = 'SELECT t.CounterID counterID, t.ClientNumber clientNumber, s.Description serviceType '+
+  const query = 'SELECT t.CounterID counterID, t.ClientNumber clientNumber, s.Description serviceType '
                 'FROM queues t ' + 
                 'JOIN service s on t.ServiceID = s.ServiceID ' + 
                 'WHERE t.CounterID is not null;';
