@@ -132,7 +132,7 @@ module.exports.get_first_client_from_queue  = (ServiceID) =>
     {
       console.log(result);
       if (err) reject(err);
-      if (!result || result.length <1) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
+      if (!result) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
       resolve(result);
     })
   })
