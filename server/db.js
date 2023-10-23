@@ -125,7 +125,7 @@ module.exports.get_service_queue_len = (ServiceID) =>
 //From the rows with the specified service ID, we need to fetch the one with the lowest ClientNumber
 module.exports.get_first_client_from_queue  = (ServiceID) =>
 {
-  const query = 'SELECT `ClientNumber` FROM `queues` WHERE `ServiceID` = ? ORDER BY ´ClientNumber´ LIMIT 1' ;
+  const query = 'SELECT `ClientNumber` FROM `queues` WHERE `ServiceID` = ? ORDER BY `ClientNumber` LIMIT 1' ;
   return new Promise((resolve, reject) =>
   {
     connection.execute(query, [ServiceID], (err, result) =>
