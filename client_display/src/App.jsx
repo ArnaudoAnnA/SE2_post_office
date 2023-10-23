@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -10,11 +10,13 @@ import API from './API'
 function App() {
   const [row, setRow] = useState([])
 
-       
-  API.get_assigned_clients()
-  .then((q) => {
-    setRow(q);
-  })
+  useEffect(() => {
+    API.get_assigned_clients()
+      .then((q) => {
+        setRow(q);
+      })
+  }, []);
+  
 
   return (
     <>
