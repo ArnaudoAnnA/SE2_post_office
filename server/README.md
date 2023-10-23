@@ -37,9 +37,10 @@ validate counterID >> look for the first client on the longest queue associated 
   - Response body: 
   ```json
     {
-      "clientNumber": 3
+      "ClientNumber": 3
     }
     ```
+    The value of ClientNumber will be -1 in case of empty queue.
   - Error responses: `500 Internal Server Error` (generic error), `400 Bad request` (invalid argument), `404 Not Found` (not present or unavailable)
 
 #### GET ASSIGNED CLIENTS
