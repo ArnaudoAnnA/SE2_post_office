@@ -93,24 +93,22 @@ app.get('/API/next_client', async (req, res) => {
     });
   if (error) { return res.status(404).end(); }
 
-  //if the number of services is greather than one, decide which to serve by looking for the one with the longest queue
-  let serviceID = services[0];
-  if (services.lenght > 1) {
-    //algorithm for finding the service with the max queue length
-    let max_len = -1;
-    services.forEach(async (sID) => {
-      let curr_len = await db.get_service_queue_len(sID)
-        .catch(err => {
-          error = true;
-          console.log(`ERROR while getting queues' lenght (${err})`);
-        });
-      if (!error && curr_len > max_len) {
-        max_len = curr_len;
-        serviceID = sID;
-      }
+  //algorithm for finding the service with the max queue length
+  let ServiceID;
+  let max_len = -1;
+  services.forEach(async (sID) => {
+    let curr_len = await db.get_service_queue_len(sID)
+    catch(err => {
+       error = true;
+       console.log(`ERROR while getting queues' lenght (${err})`);
     });
-  }
+    if (!error && curr_len > max_len) {
+      max_len = curr_len;
+      serviceID = sID;
+     }
+  });
   if (error) { return res.status(500).end(); }
+  if (max_len <= 0) { return res.json({ClientNumber: -1); }
 
   //get the first client from the service's queue
   let ClientNumber = await db.get_first_client_from_queue(ServiceID)
