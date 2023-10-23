@@ -89,3 +89,34 @@ module.exports.get_counter_services = (CounterID) =>
   })
 }
 
+
+//resolve(int) in case of success
+//reject(message) in case of failure
+module.exports.get_service_queue_len = (ServiceID) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    //TO DO
+  });
+}
+
+//resolve(ClientNumber) in case of success
+//reject(message) in case of failure
+module.exports.get_first_client_from_queue  = (ServiceID) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    //TO DO
+  });
+}
+
+//resolve(void) in case of success 
+//reject(message) in case of failure 
+module.exports.assign_client_to_counter = (ClientNumber, CounterID) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    //TO DO
+  });
+}
+
