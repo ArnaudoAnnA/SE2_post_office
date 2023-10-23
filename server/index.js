@@ -28,7 +28,7 @@ app.post('/API/queues', async (req, res) => {
 
 
 app.put(`/API/client_served`, async (req, res) => {
-  //TO DO: authentication of the client 
+  //TO DO: authentication of the client, so that the CounterID in the body won't be further necessary 
 
   //Validate client number
   if (!Number.isInteger(req.body.ClientNumber)) {
@@ -76,7 +76,7 @@ app.get(`/API/get_assigned_clients`, async (req, res) => {
 });
 
 app.get('/API/next_client', async (req, res) => {
-  //TO DO: authentication of the client
+  //TO DO: authentication of the client, so that the clientNumber in the body won't be further necessary
 
   //Validate counterID
   if (!Number.isInteger(req.body.CounterID)) {
