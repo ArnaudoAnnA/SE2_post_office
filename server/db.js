@@ -136,7 +136,7 @@ module.exports.assign_client_to_counter = (ClientNumber, CounterID) =>
 // Get assigned clients
 module.exports.get_assigned_clients = () =>
 {
-  const query = 'SELECT t.CounterID counterID, t.ClientNumber clientNumber, s.Description serviceType '
+  const query = 'SELECT t.CounterID counterID, t.ClientNumber clientNumber, s.Description serviceType '+
                 'FROM queues t ' + 
                 'JOIN service s on t.ServiceID = s.ServiceID ' + 
                 'WHERE t.CounterID is not null;';
