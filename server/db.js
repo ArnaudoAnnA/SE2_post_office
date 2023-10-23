@@ -30,7 +30,7 @@ module.exports.get_client_from_queues= (ClientNumber) =>
 
       console.log(result);
 
-      if (result.length != 1) {return reject("Invalid clientNumber");}
+      if (!result || result.length != 1) {return reject("Invalid clientNumber");}
 
       resolve(result[0]);
     });
@@ -70,5 +70,22 @@ module.exports.add_client_to_statistics = (row) =>
       resolve(result);
     });
   });
+}
+
+// returns the list of services managed by the counter
+module.exports.get_counter_services = (CounterID) =>
+{
+  const query = 'SELECT `ServiceID` FROM `configuration` '+
+              'WHERE `CounterID` = ? ';
+  return new Promise((resolve, reject) =>
+  {
+    connection.execute(query, [CounterID], (err, result) =>
+    {
+      console.log(result);
+      if (err) reject(err);
+      if (!result || result.length <1) reject("Invalid CounterID");
+      resolve(result);
+    })
+  })
 }
 

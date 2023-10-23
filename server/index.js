@@ -18,6 +18,7 @@ app.use(morgan('dev'));
 
 app.put(`/API/client_served`, async (req, res) =>
 {
+  //TO DO: authentication of the client 
 
   //Validate client number
   if (!Number.isInteger(req.body.ClientNumber))
@@ -26,7 +27,6 @@ app.put(`/API/client_served`, async (req, res) =>
   }
 
   let error = false;
-
   //Look for client number in DB
   let client = await db.get_client_from_queues(req.body.ClientNumber)
     .catch(err => {
@@ -54,6 +54,33 @@ app.put(`/API/client_served`, async (req, res) =>
 
   return res.status(200).end();
 });
+
+
+app.get('/API/next_client', async (req, res) =>
+{
+  //TO DO: authentication of the client
+
+  //Validate counterID
+  if (!Number.isInteger(req.body.CounterID))
+  {
+    return res.status(400).end();
+  }
+
+  let error = false;
+
+  //look for the services managed by this counter
+  let services = await db.get_counter_services(req.body.CounterID)
+    .catch(err => 
+      {
+        error = true;
+        console.log(`ERROR while looking for CounterID ${req.body.CounterID} in configuration table (${err})`);
+      });
+  if (error) {return res.status(404).end();}
+
+  //if the number of services is greather than one, decide which to serve by looking for the one with the longest queue
+  if (services.lenght > 1) console.log(services);
+
+})
 
 
 app.listen(config.web_server.port, async () => {

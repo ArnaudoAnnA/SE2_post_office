@@ -8,3 +8,14 @@ content-type: application/json
 {
     "ClientNumber": 10
 }
+
+
+###
+
+
+GET http://localhost:3000/API/next_client HTTP/1.1
+content-type: application/json
+
+{
+    "CounterID": 1
+}

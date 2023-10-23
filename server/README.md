@@ -1,9 +1,9 @@
 ## Procedure to make tests:
-1. start the testing version of the server by launching: <i>node tests.js</i>
+1. start the server by launching: <i>node index.js</i>
 
 2. make sure to have "REST client" extension for Visual Studio installed;
 
-3. open the file "client_for_tests.http" in Visual Studio;
+3. open the file "tests.http" in Visual Studio;
 
 4. click on the links, which appears underlined, to send the corresponding request to the server.
 
@@ -30,14 +30,15 @@ validate counterID >> look for the first client on the longest queue associated 
   - Request body: 
     ```json
     {
-      "counterID": 3
+      "CounterID": 3
     }
     ```
   - Response: `200 OK` (success)
   - Response body: 
   ```json
     {
-      "clientNumber": 3
+      "ClientNumber": 3
     }
     ```
+  IMPORTANT: ClientNumber : -1 is returned if there are no more clients
   - Error responses: `500 Internal Server Error` (generic error), `400 Bad request` (invalid argument), `404 Not Found` (not present or unavailable)

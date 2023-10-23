@@ -21,7 +21,14 @@ SET time_zone = "+00:00";
 -- Database: `db_se2_2023_team3`
 --
 
+DROP TABLE IF EXISTS `configuration`;
+DROP TABLE IF EXISTS `queues`;
+DROP TABLE IF EXISTS `statistics`;
+DROP TABLE IF EXISTS `counter`;
+DROP TABLE IF EXISTS `service`;
+
 -- --------------------------------------------------------
+
 
 --
 -- Struttura della tabella `configuration`
@@ -54,32 +61,10 @@ INSERT INTO `configuration` (`CounterID`, `ServiceID`) VALUES
 (8, 2),
 (8, 3);
 
--- --------------------------------------------------------
 
---
--- Struttura della tabella `counter`
---
-
-CREATE TABLE `counter` (
-  `CounterID` int(11) NOT NULL,
-  `Description` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `counter`
---
-
-INSERT INTO `counter` (`CounterID`, `Description`) VALUES
-(1, 'Counter 1'),
-(2, 'Counter 2'),
-(3, 'Counter 3'),
-(4, 'Counter 4'),
-(5, 'Counter 5'),
-(6, 'Counter 6'),
-(7, 'Counter 7'),
-(8, 'Counter 8');
 
 -- --------------------------------------------------------
+
 
 --
 -- Struttura della tabella `queues`
@@ -114,6 +99,31 @@ INSERT INTO `queues` (`ServiceID`, `ClientNumber`, `CounterID`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `counter`
+--
+
+CREATE TABLE `counter` (
+  `CounterID` int(11) NOT NULL,
+  `Description` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `counter`
+--
+
+INSERT INTO `counter` (`CounterID`, `Description`) VALUES
+(1, 'Counter 1'),
+(2, 'Counter 2'),
+(3, 'Counter 3'),
+(4, 'Counter 4'),
+(5, 'Counter 5'),
+(6, 'Counter 6'),
+(7, 'Counter 7'),
+(8, 'Counter 8');
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `service`
 --
 
@@ -134,6 +144,9 @@ INSERT INTO `service` (`ServiceID`, `Description`, `ServiceTime`) VALUES
 (4, 'Current Account Service', 25);
 
 -- --------------------------------------------------------
+
+
+
 
 --
 -- Struttura della tabella `statistics`
@@ -244,22 +257,28 @@ ALTER TABLE `statistics`
 -- Limiti per la tabella `configuration`
 --
 ALTER TABLE `configuration`
-  ADD CONSTRAINT `configuration_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`),
-  ADD CONSTRAINT `configuration_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`);
+  ADD CONSTRAINT `configuration_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`)
+  ON DELETE CASCADE ON UPDATE CASCADE ,
+  ADD CONSTRAINT `configuration_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`)
+  ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `queues`
 --
 ALTER TABLE `queues`
-  ADD CONSTRAINT `queues_ibfk_1` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`),
-  ADD CONSTRAINT `queues_ibfk_2` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`);
+  ADD CONSTRAINT `queues_ibfk_1` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`)
+  ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `queues_ibfk_2` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`)
+  ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `statistics`
 --
 ALTER TABLE `statistics`
-  ADD CONSTRAINT `statistics_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`),
-  ADD CONSTRAINT `statistics_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`);
+  ADD CONSTRAINT `statistics_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`)
+  ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `statistics_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`)
+  ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
