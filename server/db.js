@@ -18,6 +18,18 @@ const config = require('./config');
 
 const connection = mysql.createConnection(config.db);
 
+// Add a client to the queue of the specified service
+module.exports.addClientQueue = (service) => {
+  const query = 'INSERT INTO `queues` (`ServiceID`) SELECT `serviceID` FROM `service` WHERE `description` = ? VALUES (?)';
+  return new Promise((resolve, reject) => {
+    connection.execute(query, [service], (err, result) => {
+      if (err) { return reject(err); }
+
+      resolve(result);
+    });
+  });
+}
+
  
 module.exports.get_client_from_queues= (ClientNumber) =>
 {
@@ -30,7 +42,7 @@ module.exports.get_client_from_queues= (ClientNumber) =>
 
       console.log(result);
 
-      if (result.length != 1) {return reject("Invalid clientNumber");}
+      if (!result || result.length != 1) {return reject("Invalid clientNumber");}
 
       resolve(result[0]);
     });
@@ -69,6 +81,54 @@ module.exports.add_client_to_statistics = (row) =>
 
       resolve(result);
     });
+  });
+}
+
+// returns the list of services managed by the counter
+module.exports.get_counter_services = (CounterID) =>
+{
+  const query = 'SELECT `ServiceID` FROM `configuration` '+
+              'WHERE `CounterID` = ? ';
+  return new Promise((resolve, reject) =>
+  {
+    connection.execute(query, [CounterID], (err, result) =>
+    {
+      console.log(result);
+      if (err) reject(err);
+      if (!result || result.length <1) reject("Invalid CounterID");
+      resolve(result);
+    })
+  })
+}
+
+
+//resolve(int) in case of success
+//reject(message) in case of failure
+module.exports.get_service_queue_len = (ServiceID) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    //TO DO
+  });
+}
+
+//resolve(ClientNumber) in case of success
+//reject(message) in case of failure
+module.exports.get_first_client_from_queue  = (ServiceID) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    //TO DO
+  });
+}
+
+//resolve(void) in case of success 
+//reject(message) in case of failure 
+module.exports.assign_client_to_counter = (ClientNumber, CounterID) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    //TO DO
   });
 }
 

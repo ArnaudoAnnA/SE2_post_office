@@ -1,4 +1,0 @@
-# server URL = http://localhost:3000/tests
-
-
-GET http://localhost:3000/tests/get HTTP/1.1 
