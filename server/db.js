@@ -18,6 +18,18 @@ const config = require('./config');
 
 const connection = mysql.createConnection(config.db);
 
+// Add a client to the queue of the specified service
+module.exports.addClientQueue = (service) => {
+  const query = 'INSERT INTO `queues` (`ServiceID`) SELECT `serviceID` FROM `service` WHERE `description` = ? VALUES (?)';
+  return new Promise((resolve, reject) => {
+    connection.execute(query, [service], (err, result) => {
+      if (err) { return reject(err); }
+
+      resolve(result);
+    });
+  });
+}
+
  
 module.exports.get_client_from_queues= (ClientNumber) =>
 {
