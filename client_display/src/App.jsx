@@ -27,6 +27,7 @@ function App() {
 
   return (
     <>
+      <h2 style={{paddingBottom: '10px'}}>Post Office Display</h2>
       <RandomTable row={row}></RandomTable>
     </>
   )
