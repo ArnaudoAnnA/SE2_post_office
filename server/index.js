@@ -98,7 +98,7 @@ app.get('/API/next_client', async (req, res) => {
   let max_len = -1;
   services.forEach(async (sID) => {
     let curr_len = await db.get_service_queue_len(sID)
-    catch(err => {
+    .catch(err => {
        error = true;
        console.log(`ERROR while getting queues' lenght (${err})`);
     });
@@ -108,7 +108,7 @@ app.get('/API/next_client', async (req, res) => {
      }
   });
   if (error) { return res.status(500).end(); }
-  if (max_len <= 0) { return res.json({ClientNumber: -1); }
+  if (max_len <= 0) { return res.json({ClientNumber: -1}); }
 
   //get the first client from the service's queue
   let ClientNumber = await db.get_first_client_from_queue(ServiceID)
