@@ -44,11 +44,15 @@ app.put(`/API/client_served`, async (req, res) => {
     });
   if (error) return res.status(404).end();
 
+  if (!client.CounterID)
+  {
+    console.log(`ERROR trying to mark as select the client ${client.ClientNumber} who was not assigned to any counter`);
+    return res.status(400).end();
+  } 
 
   //add the client to the statistics table
   await db.add_client_to_statistics(client)
     .catch(err => {
-      if (err == "BADREQUEST"){ return res.status(400).end();}
       error = true;
       console.log(`ERROR in writing in statistics table (${err})`);
     });
