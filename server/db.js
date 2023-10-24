@@ -107,15 +107,14 @@ module.exports.get_counter_services = (CounterID) =>
 //we need to count the number of rows in queues that contain the specified ServiceID
 module.exports.get_service_queue_len = (ServiceID) =>
 {
-  const query = 'SELECT count("x") FROM `queues` WHERE `ServiceID` = ?';
+  const query = 'SELECT COUNT(*) AS len FROM `queues` WHERE `ServiceID` = ?';
   return new Promise((resolve, reject) =>
   {
     connection.execute(query, [ServiceID], (err, result) =>
     {
-      console.log(result);
       if (err) reject(err);
-      if (!result || result.length <1) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
-      resolve(result);
+      if (!result || result.length <1) reject("Invalid ServiceID"); //the specified service queue may be empty
+      resolve(result.len);
     })
   })
 }

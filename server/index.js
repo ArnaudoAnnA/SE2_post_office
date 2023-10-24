@@ -96,11 +96,11 @@ app.get('/API/next_client', async (req, res) => {
   //algorithm for finding the service with the max queue length
   let ServiceID;
   let max_len = -1;
-  services.forEach(async (sID) => {
-    let curr_len = await db.get_service_queue_len(sID)
+  services.forEach(async (service) => {
+    let curr_len = await db.get_service_queue_len(service.ServiceID)
     .catch(err => {
        error = true;
-       console.log(`ERROR while getting queues' lenght (${err})`);
+       console.log(`ERROR while getting queue lenght of service ${service.ServiceID} (${err})`);
     });
     if (!error && curr_len > max_len) {
       max_len = curr_len;
