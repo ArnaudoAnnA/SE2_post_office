@@ -18,8 +18,7 @@ const APICall = async (endpoint, method = "GET", body = undefined, headers = und
         const response = await fetch(new URL(endpoint, APIURL), {
             method,
             body,
-            headers,
-            credentials: "include"
+            headers
         });
         if (response.ok) {
             if (expectResponse) return await response.json();

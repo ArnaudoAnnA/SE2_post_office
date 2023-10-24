@@ -23,7 +23,7 @@ module.exports.addClientQueue = (service) => {
   const query = 'INSERT INTO `queues` (`ServiceID`) SELECT `serviceID` FROM `service` WHERE `description` = ? VALUES (?)';
   return new Promise((resolve, reject) => {
     connection.execute(query, [service], (err, result) => {
-      if (err) { return reject(err); }
+      if (err) { console.log("errore qui"); return reject(err); }
 
       resolve(result);
     });
