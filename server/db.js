@@ -75,6 +75,7 @@ module.exports.add_client_to_statistics = (row) =>
                 'VALUES (?, ?, ?)';
   return new Promise((resolve, reject) =>
   {
+    if (row.CounterID == null){reject("BADREQUEST");}
     connection.execute(query, [row.CounterID, row.ServiceID, date ], (err, result) => 
     {
       if (err) {reject(err);}
