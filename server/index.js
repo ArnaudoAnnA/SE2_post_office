@@ -87,8 +87,14 @@ app.get('/API/next_client', async (req, res) => {
   if (!Number.isInteger(req.body.CounterID)) {
     return res.status(400).end();
   }
-
-  let error = false;
+  let error = true;
+  await db.get_client_assigned_to_counter(req.body.CounterID)
+    .catch(err => {if (err.startsWith("No Clients associated with CounterID")) {error = false;} });
+  if (error)
+  {
+    console.log(`Counter ${req.body.CounterID} already ascociated to a client`);
+    return res.status(400).end();
+  }
 
   //look for the services managed by this counter
   let services = await db.get_counter_services(req.body.CounterID)

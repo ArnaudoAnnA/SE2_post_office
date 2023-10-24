@@ -7,11 +7,12 @@ PUT http://localhost:3000/API/client_served HTTP/1.1
 content-type: application/json
 
 {
-    "ClientNumber": 10
+    "ClientNumber": 16
 }
 
 
 ###
+
 
 GET http://localhost:3000/API/next_client HTTP/1.1
 content-type: application/json

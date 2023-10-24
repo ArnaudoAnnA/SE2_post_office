@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ott 22, 2023 alle 10:21
--- Versione del server: 10.4.24-MariaDB
--- Versione PHP: 8.1.6
+-- Generation Time: Oct 24, 2023 at 12:53 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,26 +21,20 @@ SET time_zone = "+00:00";
 -- Database: `db_se2_2023_team3`
 --
 
-DROP TABLE IF EXISTS `configuration`;
-DROP TABLE IF EXISTS `queues`;
-DROP TABLE IF EXISTS `statistics`;
-DROP TABLE IF EXISTS `counter`;
-DROP TABLE IF EXISTS `service`;
-
 -- --------------------------------------------------------
 
-
 --
--- Struttura della tabella `configuration`
+-- Table structure for table `configuration`
 --
 
+DROP TABLE IF EXISTS `configuration`;
 CREATE TABLE `configuration` (
   `CounterID` int(11) NOT NULL,
   `ServiceID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `configuration`
+-- Dumping data for table `configuration`
 --
 
 INSERT INTO `configuration` (`CounterID`, `ServiceID`) VALUES
@@ -61,54 +55,20 @@ INSERT INTO `configuration` (`CounterID`, `ServiceID`) VALUES
 (8, 2),
 (8, 3);
 
-
-
--- --------------------------------------------------------
-
-
---
--- Struttura della tabella `queues`
---
-
-CREATE TABLE `queues` (
-  `ServiceID` int(11) NOT NULL,
-  `ClientNumber` int(11) NOT NULL,
-  `CounterID` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `queues`
---
-
-INSERT INTO `queues` (`ServiceID`, `ClientNumber`, `CounterID`) VALUES
-(2, 1, 2),
-(1, 2, 3),
-(3, 3, null),
-(4, 4, 3),
-(4, 5, 4),
-(4, 6, null),
-(4, 7, null),
-(1, 8, null),
-(1, 9, null),
-(2, 10, null),
-(2, 11, null),
-(2, 12, null),
-(3, 13, null),
-(3, 14, null);
-
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `counter`
+-- Table structure for table `counter`
 --
 
+DROP TABLE IF EXISTS `counter`;
 CREATE TABLE `counter` (
   `CounterID` int(11) NOT NULL,
   `Description` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `counter`
+-- Dumping data for table `counter`
 --
 
 INSERT INTO `counter` (`CounterID`, `Description`) VALUES
@@ -124,17 +84,53 @@ INSERT INTO `counter` (`CounterID`, `Description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `service`
+-- Table structure for table `queues`
 --
 
+DROP TABLE IF EXISTS `queues`;
+CREATE TABLE `queues` (
+  `ServiceID` int(11) NOT NULL,
+  `ClientNumber` int(11) NOT NULL,
+  `CounterID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `queues`
+--
+
+INSERT INTO `queues` (`ServiceID`, `ClientNumber`, `CounterID`) VALUES
+(2, 1, 2),
+(1, 2, 1),
+(4, 4, 3),
+(4, 6, 4),
+(4, 7, 6),
+(1, 8, 5),
+(1, 9, 7),
+(2, 12, 8),
+(3, 15, NULL),
+(1, 16, NULL),
+(4, 17, NULL),
+(2, 18, NULL),
+(3, 19, NULL),
+(4, 20, NULL),
+(1, 21, NULL),
+(3, 22, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service`
+--
+
+DROP TABLE IF EXISTS `service`;
 CREATE TABLE `service` (
   `ServiceID` int(11) NOT NULL,
   `Description` varchar(30) NOT NULL,
   `ServiceTime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `service`
+-- Dumping data for table `service`
 --
 
 INSERT INTO `service` (`ServiceID`, `Description`, `ServiceTime`) VALUES
@@ -145,22 +141,20 @@ INSERT INTO `service` (`ServiceID`, `Description`, `ServiceTime`) VALUES
 
 -- --------------------------------------------------------
 
-
-
-
 --
--- Struttura della tabella `statistics`
+-- Table structure for table `statistics`
 --
 
+DROP TABLE IF EXISTS `statistics`;
 CREATE TABLE `statistics` (
   `ID` int(11) NOT NULL,
   `CounterID` int(11) NOT NULL,
   `ServiceID` int(11) NOT NULL,
   `date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `statistics`
+-- Dumping data for table `statistics`
 --
 
 INSERT INTO `statistics` (`ID`, `CounterID`, `ServiceID`, `date`) VALUES
@@ -177,21 +171,22 @@ INSERT INTO `statistics` (`ID`, `CounterID`, `ServiceID`, `date`) VALUES
 (11, 5, 2, '2023-10-27'),
 (12, 8, 2, '2023-10-27'),
 (13, 6, 3, '2023-10-28'),
-(14, 7, 3, '2023-10-28');
+(14, 7, 3, '2023-10-28'),
+(15, 4, 2, '2023-10-24');
 
 --
--- Indici per le tabelle scaricate
+-- Indexes for dumped tables
 --
 
 --
--- Indici per le tabelle `configuration`
+-- Indexes for table `configuration`
 --
 ALTER TABLE `configuration`
   ADD PRIMARY KEY (`CounterID`,`ServiceID`),
   ADD KEY `ServiceID` (`ServiceID`);
 
 --
--- Indici per le tabelle `counter`
+-- Indexes for table `counter`
 --
 ALTER TABLE `counter`
   ADD UNIQUE KEY `CounterID` (`CounterID`),
@@ -199,7 +194,7 @@ ALTER TABLE `counter`
   ADD UNIQUE KEY `CounterID_3` (`CounterID`);
 
 --
--- Indici per le tabelle `queues`
+-- Indexes for table `queues`
 --
 ALTER TABLE `queues`
   ADD PRIMARY KEY (`ClientNumber`),
@@ -207,14 +202,14 @@ ALTER TABLE `queues`
   ADD KEY `CounterID` (`CounterID`);
 
 --
--- Indici per le tabelle `service`
+-- Indexes for table `service`
 --
 ALTER TABLE `service`
   ADD PRIMARY KEY (`ServiceID`),
   ADD UNIQUE KEY `ServiceID` (`ServiceID`);
 
 --
--- Indici per le tabelle `statistics`
+-- Indexes for table `statistics`
 --
 ALTER TABLE `statistics`
   ADD PRIMARY KEY (`ID`),
@@ -222,63 +217,57 @@ ALTER TABLE `statistics`
   ADD KEY `ServiceID` (`ServiceID`);
 
 --
--- AUTO_INCREMENT per le tabelle scaricate
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT per la tabella `counter`
+-- AUTO_INCREMENT for table `counter`
 --
 ALTER TABLE `counter`
   MODIFY `CounterID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT per la tabella `queues`
+-- AUTO_INCREMENT for table `queues`
 --
 ALTER TABLE `queues`
-  MODIFY `ClientNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ClientNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT per la tabella `service`
+-- AUTO_INCREMENT for table `service`
 --
 ALTER TABLE `service`
   MODIFY `ServiceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT per la tabella `statistics`
+-- AUTO_INCREMENT for table `statistics`
 --
 ALTER TABLE `statistics`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- Limiti per le tabelle scaricate
+-- Constraints for dumped tables
 --
 
 --
--- Limiti per la tabella `configuration`
+-- Constraints for table `configuration`
 --
 ALTER TABLE `configuration`
-  ADD CONSTRAINT `configuration_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`)
-  ON DELETE CASCADE ON UPDATE CASCADE ,
-  ADD CONSTRAINT `configuration_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`)
-  ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `configuration_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `configuration_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `queues`
+-- Constraints for table `queues`
 --
 ALTER TABLE `queues`
-  ADD CONSTRAINT `queues_ibfk_1` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`)
-  ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `queues_ibfk_2` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`)
-  ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `queues_ibfk_1` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `queues_ibfk_2` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `statistics`
+-- Constraints for table `statistics`
 --
 ALTER TABLE `statistics`
-  ADD CONSTRAINT `statistics_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`)
-  ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `statistics_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`)
-  ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `statistics_ibfk_1` FOREIGN KEY (`CounterID`) REFERENCES `counter` (`CounterID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `statistics_ibfk_2` FOREIGN KEY (`ServiceID`) REFERENCES `service` (`ServiceID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

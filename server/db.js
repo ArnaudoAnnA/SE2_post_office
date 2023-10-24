@@ -109,7 +109,7 @@ module.exports.get_counter_services = (CounterID) =>
 //we need to count the number of rows in queues that contain the specified ServiceID
 module.exports.get_service_queue_len = (ServiceID) =>
 {
-  const query = 'SELECT COUNT(*) AS len FROM `queues` WHERE `ServiceID` = ?';
+  const query = 'SELECT COUNT(*) AS len FROM `queues` WHERE `ServiceID` = ? AND CounterID IS NULL';
   return new Promise((resolve, reject) =>
   {
     connection.execute(query, [ServiceID], (err, result) =>
@@ -127,15 +127,31 @@ module.exports.get_service_queue_len = (ServiceID) =>
 //From the rows with the specified service ID, we need to fetch the one with the lowest ClientNumber
 module.exports.get_first_client_from_queue  = (ServiceID) =>
 {
-  const query = 'SELECT `ClientNumber` FROM `queues` WHERE `ServiceID` = ? ORDER BY `ClientNumber` LIMIT 1' ;
+  const query = 'SELECT `ClientNumber` FROM `queues` WHERE `ServiceID` = ? AND `CounterID` IS NULL ORDER BY `ClientNumber` LIMIT 1' ;
   return new Promise((resolve, reject) =>
   {
     connection.execute(query, [ServiceID], (err, result) =>
     {
       console.log(result);
       if (err) reject(err);
-      if (!result) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
+      if (!result) reject("Invalid ServiceID"); //the specified service queue may be empty
       resolve(result[0].ClientNumber);
+    })
+  })
+}
+
+module.exports.get_client_assigned_to_counter = (CounterID) =>
+{
+  const query = 'SELECT `ClientNumber` FROM `queues` WHERE `CounterID` = ?' ;
+  return new Promise((resolve, reject) =>
+  {
+    connection.execute(query, [CounterID], (err, result) =>
+    {
+      console.log(result.length);
+      if (err) reject(err);
+      else if (!result) reject(`No Clients associated with CounterID ${CounterID}`);
+      else if (result.length > 1) reject(`There's more than one client associated with CounterID ${CounterID}`);
+      else resolve(result[0].ClientNumber);
     })
   })
 }
