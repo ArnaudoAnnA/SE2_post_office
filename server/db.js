@@ -145,13 +145,13 @@ module.exports.get_first_client_from_queue  = (ServiceID) =>
 //we need to update the CounterID column of the row with the specified ClientNumber
 module.exports.assign_client_to_counter = (ClientNumber, CounterID) =>
 {
-  const query = 'UPDATE `queues` SET ´CounterID´ = ? WHERE ´ClientNumber´ = ?';
+  const query = 'UPDATE `queues` SET `CounterID` = ? WHERE `ClientNumber` = ?';
   return new Promise((resolve, reject) =>
   {
     connection.execute(query, [CounterID, ClientNumber], (err, result) =>
     {
-      console.log(result);
       if (err) reject(err);
+      if (!result || result.affectedRows != 1) reject("No result or wrong number of affected rows");
       resolve();
     })
   })
