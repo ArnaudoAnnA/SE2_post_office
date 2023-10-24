@@ -44,3 +44,9 @@
 .mainContent {
   padding-top: 5rem;
 }
+
+.toast {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+}

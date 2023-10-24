@@ -41,24 +41,27 @@ function clientServed(clientNumber) {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
-      body: JSON.stringify(clientNumber)
+      //credentials: 'include',
+      body: JSON.stringify({ClientNumber: clientNumber})
     })
   )
-}
+};
 
 
 /**
- * Getting and returing the client number.
+ * Getting and returning the client number and the service name.
  */
 const nextClient = async (counterID) => {
-  return getJson(fetch(apiurl + 'next_client', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(counterID)
-  })).then (json => json.clientNumber)
+  return getJson(
+    fetch(apiurl + 'next_client', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      //credentials: 'include',
+      body: JSON.stringify({CounterID: counterID})
+    })).then(json => { 
+        const user = {clientNumber: json.ClientNumber, serviceName: json.ServiceName};
+        return user;})
 };
 
 

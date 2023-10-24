@@ -1,11 +1,16 @@
-import React from 'react';
+import { useContext } from "react";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Col, Container, Row, Card } from 'react-bootstrap';
+
+import MessageContext from './messageCtx';
 import API  from './API';
 
 
 function BasicLayout(props) {
+
+  const {handleErrors} = useContext(MessageContext);
 
   const handleClientServed = () => {
     if ((props.clientID!==-1 && props.serviceName)) {
@@ -14,19 +19,22 @@ function BasicLayout(props) {
         props.setClientID(-1);
         props.setServiceName('');
       })
-      .catch(e => console.log(e));
+      .catch(err => handleErrors(err));
     } else {
-      console.log("You cannot click here because nobody is serving");
+      handleErrors("You cannot click here because nobody is serving");
     }
   }
 
   const handleNextClient = () => {
     if ((props.clientID!==-1 && props.serviceName)) {
-      console.log("You cannot click here because you have to serve the client before")
+      handleErrors("You cannot click here because you have to serve the client before");
     } else {
-      /*API.nextClient(props.counterID)
-      .then()
-      .catch(e => console.log(e));*/
+      API.nextClient(props.counterID)
+      .then((data) => {
+        props.setClientID(data.clientNumber);
+        props.setServiceName(data.serviceName);
+      })
+      .catch(err => handleErrors(err));
     }
   }
   

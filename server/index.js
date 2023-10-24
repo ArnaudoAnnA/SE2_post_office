@@ -1,20 +1,20 @@
 "use strict";
 
+/*** Importing modules ***/
 const express = require("express");
-const app = express();
-const config = require("./config");
 const morgan = require('morgan'); //it enables to log all the requestes whose reached the server (debugging purpose)
 const cors = require('cors');
+const config = require("./config");
+const db = require('./db');
+
+/*** init express and set-up the middlewares ***/
+const app = express();
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.static('images'))
 
-const db = require('./db');
-
-
 /** Set up and enable Cross-Origin Resource Sharing (CORS) **/
 app.use(cors());
-
-app.use(morgan('dev'));
 
 /*
 * POST api/queues
@@ -26,7 +26,7 @@ app.post('/API/queues', async (req, res) => {
     .catch(() => res.status(503).json({errors: "Database error during client insertion"}));
 });
 
-
+//This API move a client that has been served from the queue to the statistic table
 app.put(`/API/client_served`, async (req, res) => {
   //TO DO: authentication of the client, so that the CounterID in the body won't be further necessary 
 
@@ -66,20 +66,10 @@ app.put(`/API/client_served`, async (req, res) => {
     });
   if (error) { return res.status(500).end(); }
 
-  return res.status(200).end();
+  return res.status(200).json({});
 });
 
-app.get(`/API/get_assigned_clients`, async (req, res) => {
-  await db.get_assigned_clients()
-    .then(result => {
-      return res.status(200).json(result);
-    })
-    .catch(err => {
-      console.log(`ERROR in request: ${err}`);
-      return res.status(500).end();
-    });
-});
-
+//This API call from the queue the client that must be served
 app.get('/API/next_client', async (req, res) => {
   //TO DO: authentication of the client, so that the clientNumber in the body won't be further necessary
 
@@ -138,9 +128,26 @@ app.get('/API/next_client', async (req, res) => {
     });
   if (error) { return res.status(500).end(); }
 
-  return res.status(200).json({ ClientNumber: ClientNumber });
+  let ServiceName = await db.get_service_name_from_service_id(ServiceID)
+    .catch(err => {
+      error = true;
+      console.log(`ERROR while fetching the service name of the service number ${ServiceID} (${err})`);
+    });
+  if (error) { return res.status(500).end(); }
+
+  return res.status(200).json({ ClientNumber: ClientNumber, ServiceName: ServiceName });
 })
 
+app.get(`/API/get_assigned_clients`, async (req, res) => {
+  await db.get_assigned_clients()
+    .then(result => {
+      return res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(`ERROR in request: ${err}`);
+      return res.status(500).end();
+    });
+});
 
 app.listen(config.web_server.port, async () => {
   console.log(`Server app listening at ${config.web_server.host}:${config.web_server.port}`);

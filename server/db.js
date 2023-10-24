@@ -177,7 +177,7 @@ module.exports.assign_client_to_counter = (ClientNumber, CounterID) =>
 // Get assigned clients
 module.exports.get_assigned_clients = () =>
 {
-  const query = 'SELECT t.CounterID counterID, t.ClientNumber clientNumber, s.Description serviceType '
+  const query = 'SELECT t.CounterID counterID, t.ClientNumber clientNumber, s.Description serviceType ' +
                 'FROM queues t ' + 
                 'JOIN service s on t.ServiceID = s.ServiceID ' + 
                 'WHERE t.CounterID is not null;';
@@ -195,4 +195,23 @@ module.exports.get_assigned_clients = () =>
       resolve(assignedClients);
     });
   });
+}
+
+//Get the service name from the serviceID
+module.exports.get_service_name_from_service_id = (ServiceID) =>
+{
+  const query = 'SELECT s.Description ServiceName ' +
+                'FROM service s ' + 
+                'WHERE s.ServiceID = ?;';
+  return new Promise((resolve, reject) =>
+  {
+    connection.execute(query, [ServiceID], (err, result) =>
+    {
+      if (err) reject(err);
+      else if (!result || result.length === 0) reject(`Service ${ServiceID} does not exist`);
+      else if (result.length > 1) reject(`There's more than one service name associated with service ${ServiceID}`);
+      
+      resolve(result[0].ServiceName);
+    })
+  })
 }
