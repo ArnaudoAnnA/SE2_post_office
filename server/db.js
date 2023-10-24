@@ -149,7 +149,7 @@ module.exports.get_client_assigned_to_counter = (CounterID) =>
     {
       console.log(result.length);
       if (err) reject(err);
-      else if (!result) reject(`No Clients associated with CounterID ${CounterID}`);
+      else if (!result || result.length === 0) reject(`No Clients associated with CounterID ${CounterID}`);
       else if (result.length > 1) reject(`There's more than one client associated with CounterID ${CounterID}`);
       else resolve(result[0].ClientNumber);
     })
