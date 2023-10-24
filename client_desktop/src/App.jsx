@@ -1,33 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import BasicLayout from './Desktop'
+import API from './API'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [counterID, setCounterID] = useState(4);
+  const [clientID, setClientID] = useState(-1);
+  const [services, setServices] = useState([]);
+  const [serviceName, setServiceName] = useState('');
+
+  useEffect(() => {
+    const init = async() => {
+      // API to retrieve services assigned to the current counter
+      /*API.getServices()
+        .then(() => {})*/ 
+
+      //API to call the first client to serve with relative service
+      /*API.nextClient(counterID)
+      .then((user) => {
+        setClientID(user.clientNumber);
+        setServiceName(user.serviceName);
+      })
+      .catch(e => console.log(e));*/
+    };
+    init();
+  }, []);
+  
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BasicLayout counterID={counterID} clientID={clientID} serviceName={serviceName} setClientID={setClientID} setServiceName={setServiceName}></BasicLayout>
     </>
   )
 }
