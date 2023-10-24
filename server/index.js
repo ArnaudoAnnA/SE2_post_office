@@ -40,7 +40,7 @@ app.put(`/API/client_served`, async (req, res) => {
   let client = await db.get_client_from_queues(req.body.ClientNumber)
     .catch(err => {
       error = true;
-      console.log(`ERROR in request: clientNumber not found (${err})`);
+      console.log(`ERROR in request: clientNumber ${req.body.ClientNumber} not found (${err})`);
     });
   if (error) return res.status(404).end();
 
