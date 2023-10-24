@@ -96,17 +96,20 @@ app.get('/API/next_client', async (req, res) => {
   //algorithm for finding the service with the max queue length
   let ServiceID;
   let max_len = -1;
-  services.forEach(async (service) => {
+  for (let service of services)
+  {
     let curr_len = await db.get_service_queue_len(service.ServiceID)
-    .catch(err => {
-       error = true;
-       console.log(`ERROR while getting queue lenght of service ${service.ServiceID} (${err})`);
-    });
+      .catch(err => {
+        error = true;
+        console.log(`ERROR while getting queue lenght of service ${service.ServiceID} (${err})`);
+      });
     if (!error && curr_len > max_len) {
       max_len = curr_len;
-      serviceID = sID;
+      ServiceID = service.ServiceID;
      }
-  });
+  }
+  
+  console.log(`max service's queue len: ${max_len} (service ${ServiceID})`);
   if (error) { return res.status(500).end(); }
   if (max_len <= 0) { return res.json({ClientNumber: -1}); }
 
@@ -120,7 +123,7 @@ app.get('/API/next_client', async (req, res) => {
   await db.assign_client_to_counter(ClientNumber, req.body.CounterID)
     .catch(err => {
       error = true;
-      console.log(`ERROR when writing on table queues with the aim of assigning ClientNumber ${ClientNumber} to CounterID ${CounterID} (${err})`);
+      console.log(`ERROR when writing on table queues with the aim of assigning ClientNumber ${ClientNumber} to CounterID ${req.body.CounterID} (${err})`);
     });
   if (error) { return res.status(500).end(); }
 

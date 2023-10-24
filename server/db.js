@@ -93,6 +93,7 @@ module.exports.get_counter_services = (CounterID) =>
   {
     connection.execute(query, [CounterID], (err, result) =>
     {
+      console.log(`Services managed by conuter ${CounterID}: `);
       console.log(result);
       if (err) reject(err);
       if (!result || result.length <1) reject("Invalid CounterID");
@@ -112,9 +113,10 @@ module.exports.get_service_queue_len = (ServiceID) =>
   {
     connection.execute(query, [ServiceID], (err, result) =>
     {
+      console.log(`Len of service's ${ServiceID} queue: ${result[0].len}`);
       if (err) reject(err);
       if (!result || result.length <1) reject("Invalid ServiceID"); //the specified service queue may be empty
-      resolve(result.len);
+      resolve(result[0].len);
     })
   })
 }
@@ -132,7 +134,7 @@ module.exports.get_first_client_from_queue  = (ServiceID) =>
       console.log(result);
       if (err) reject(err);
       if (!result) reject("Invalid ServiceID or empty queue"); //the specified service queue may be empty
-      resolve(result);
+      resolve(result[0].ClientNumber);
     })
   })
 }
