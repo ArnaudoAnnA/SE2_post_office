@@ -156,6 +156,22 @@ module.exports.get_client_assigned_to_counter = (CounterID) =>
   })
 }
 
+module.exports.get_client_and_service_assigned_to_counter = (CounterID) =>
+{
+  const query = 'SELECT `ClientNumber`, `ServiceID` FROM `queues` WHERE `CounterID` = ?' ;
+  return new Promise((resolve, reject) =>
+  {
+    connection.execute(query, [CounterID], (err, result) =>
+    {
+      console.log(result.length);
+      if (err) reject(err);
+      else if (!result || result.length === 0) reject(`No Clients associated with CounterID ${CounterID}`);
+      else if (result.length > 1) reject(`There's more than one client associated with CounterID ${CounterID}`);
+      else resolve(result[0]);
+    })
+  })
+}
+
 //resolve(void) in case of success 
 //reject(message) in case of failure 
 //we need to update the CounterID column of the row with the specified ClientNumber

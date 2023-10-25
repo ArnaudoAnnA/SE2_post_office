@@ -53,18 +53,31 @@ function clientServed(clientNumber) {
  */
 const nextClient = async (counterID) => {
   return getJson(
-    fetch(apiurl + 'next_client', {
+    fetch(apiurl + 'next_client/' + counterID, {
       headers: {
         'Content-Type': 'application/json',
-      },
+      }
       //credentials: 'include',
-      body: JSON.stringify({CounterID: counterID})
     })).then(json => { 
-        const user = {clientNumber: json.ClientNumber, serviceName: json.ServiceName};
-        return user;})
+      const user = {clientNumber: json.ClientNumber, serviceName: json.ServiceName};
+      return user;})
+};
+
+/**
+ * Getting and returning the client number and the service name.
+ */
+const getClientAndServiceAssignedToCounter = async (counterID) => {
+  return getJson(
+    fetch(apiurl + 'get_client_and_service_assigned_to_counter/' + counterID, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+      //credentials: 'include',
+    })).then(json => { 
+      const user = {clientNumber: json.ClientNumber, serviceName: json.ServiceName};
+      return user;})
 };
 
 
-
-const API = { clientServed, nextClient };
+const API = { clientServed, nextClient, getClientAndServiceAssignedToCounter };
 export default API;

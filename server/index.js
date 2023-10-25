@@ -16,6 +16,10 @@ app.use(express.static('images'))
 /** Set up and enable Cross-Origin Resource Sharing (CORS) **/
 app.use(cors());
 
+
+
+
+
 /*
 * POST api/queues
 * Add a client to the queue
@@ -70,27 +74,28 @@ app.put(`/API/client_served`, async (req, res) => {
 });
 
 //This API call from the queue the client that must be served
-app.get('/API/next_client', async (req, res) => {
+app.get(`/API/next_client/:counterID`, async (req, res) => {
   //TO DO: authentication of the client, so that the clientNumber in the body won't be further necessary
-
+  
   //Validate counterID
-  if (!Number.isInteger(req.body.CounterID)) {
+  /*if (!Number.isInteger(req.params.counterID)) {
     return res.status(400).end();
-  }
+  }*/
+
   let error = true;
-  await db.get_client_assigned_to_counter(req.body.CounterID)
+  await db.get_client_assigned_to_counter(req.params.counterID)
     .catch(err => {if (err.startsWith("No Clients associated with CounterID")) {error = false;} });
   if (error)
   {
-    console.log(`Counter ${req.body.CounterID} already ascociated to a client`);
+    console.log(`Counter ${req.params.counterID} already ascociated to a client`);
     return res.status(400).end();
   }
 
   //look for the services managed by this counter
-  let services = await db.get_counter_services(req.body.CounterID)
+  let services = await db.get_counter_services(req.params.counterID)
     .catch(err => {
       error = true;
-      console.log(`ERROR while looking for CounterID ${req.body.CounterID} in configuration table (${err})`);
+      console.log(`ERROR while looking for CounterID ${req.params.counterID} in configuration table (${err})`);
     });
   if (error) { return res.status(404).end(); }
 
@@ -121,10 +126,10 @@ app.get('/API/next_client', async (req, res) => {
       console.log(`ERROR while fetching the first client of the queue related to service ${ServiceID} (${err})`);
     });
 
-  await db.assign_client_to_counter(ClientNumber, req.body.CounterID)
+  await db.assign_client_to_counter(ClientNumber, req.params.counterID)
     .catch(err => {
       error = true;
-      console.log(`ERROR when writing on table queues with the aim of assigning ClientNumber ${ClientNumber} to CounterID ${req.body.CounterID} (${err})`);
+      console.log(`ERROR when writing on table queues with the aim of assigning ClientNumber ${ClientNumber} to CounterID ${req.params.counterID} (${err})`);
     });
   if (error) { return res.status(500).end(); }
 
@@ -147,6 +152,36 @@ app.get(`/API/get_assigned_clients`, async (req, res) => {
       console.log(`ERROR in request: ${err}`);
       return res.status(500).end();
     });
+});
+
+//This API find the client (and relative Service name) assigned to a counter
+app.get(`/API/get_client_and_service_assigned_to_counter/:counterID`, async (req, res) => {
+  //TO DO: authentication of the client, so that the clientNumber in the body won't be further necessary
+  
+  //Validate counterID
+  /*if (!Number.isInteger(req.params.counterID)) {
+    return res.status(400).end();
+  }*/
+
+  let flag = 1;
+  let user = await db.get_client_and_service_assigned_to_counter(req.params.counterID)
+    .catch(err => {
+      if (err.startsWith("No Clients associated with CounterID")) {
+        flag = 0;
+      }
+    });
+  
+  if (flag) {
+    let ServiceName = await db.get_service_name_from_service_id(user.ServiceID)
+    .catch(err => {
+      console.log(`ERROR while fetching the service name of the service number ${ServiceID} (${err})`);
+      return res.status(500).end();
+    });
+
+    return res.status(200).json({ ClientNumber: user.ClientNumber, ServiceName: ServiceName});
+  } else {
+    return res.status(200).json({ ClientNumber: -1, ServiceName: '' });
+  }
 });
 
 app.listen(config.web_server.port, async () => {

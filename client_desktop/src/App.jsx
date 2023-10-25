@@ -34,8 +34,8 @@ function App() {
       /*API.getServices()
         .then(() => {})*/ 
 
-      //API to call the first client to serve with relative service
-      API.nextClient(counterID)
+      //API to find the client assigned to this counter in this moment
+      API.getClientAndServiceAssignedToCounter(counterID)
       .then((data) => {
         setClientID(data.clientNumber);
         setServiceName(data.serviceName);
