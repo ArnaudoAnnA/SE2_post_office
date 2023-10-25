@@ -117,7 +117,7 @@ app.get(`/API/next_client/:counterID`, async (req, res) => {
   
   console.log(`max service's queue len: ${max_len} (service ${ServiceID})`);
   if (error) { return res.status(500).end(); }
-  if (max_len <= 0) { return res.json({ClientNumber: -1}); }
+  if (max_len <= 0) { return res.json({ ClientNumber: -1, ServiceName: "" }); }
 
   //get the first client from the service's queue
   let ClientNumber = await db.get_first_client_from_queue(ServiceID)

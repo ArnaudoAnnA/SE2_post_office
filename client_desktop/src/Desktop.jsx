@@ -33,6 +33,9 @@ function BasicLayout(props) {
       .then((data) => {
         props.setClientID(data.clientNumber);
         props.setServiceName(data.serviceName);
+        if (data.clientNumber===-1) {
+          handleErrors("You have no clients to serve");
+        }
       })
       .catch(err => handleErrors(err));
     }
