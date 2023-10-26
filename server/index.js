@@ -26,7 +26,7 @@ app.use(cors());
 */
 app.post('/API/queues', async (req, res) => {
   db.addClientQueue(req.body.service)
-    .then(() => res.end())
+    .then(() => res.status(200).end())
     .catch(() => res.status(503).json({errors: "Database error during client insertion"}));
 });
 

@@ -10,7 +10,7 @@ function App() {
     API.queues(service)
     .then((res) => {
       // TODO: display estimated wait time
-      window.alert("Estimated wait time: ");
+      // window.alert("Estimated wait time: ");
     })
     .catch((err) => {
       console.log(err);
@@ -26,7 +26,7 @@ function App() {
       <Row>
         <Col ></Col>
         <Col className='col-6'>
-          <Card onClick={() => handleClick("Shippings")} style={{ cursor: "pointer" }} className='custom-card'>
+          <Card onClick={() => handleClick("1")} style={{ cursor: "pointer" }} className='custom-card'>
           <Card.Body>
               <Row className="align-items-center">
                 <Col>
@@ -47,7 +47,7 @@ function App() {
       <Row>
         <Col ></Col>
         <Col className='col-6'>
-          <Card onClick={() => handleClick("Account Management")} style={{ cursor: "pointer" }} className='custom-card'>
+          <Card onClick={() => handleClick("2")} style={{ cursor: "pointer" }} className='custom-card'>
           <Card.Body>
               <Row className="align-items-center">
                 <Col>
@@ -68,7 +68,7 @@ function App() {
       <Row>
         <Col ></Col>
         <Col className='col-6'>
-          <Card onClick={() => handleClick("Bills")} style={{ cursor: "pointer" }} className='custom-card'>
+          <Card onClick={() => handleClick("3")} style={{ cursor: "pointer" }} className='custom-card'>
             <Card.Body>
               <Row className="align-items-center">
                 <Col>
@@ -89,7 +89,7 @@ function App() {
       <Row>
         <Col ></Col>
         <Col className='col-6'>
-          <Card onClick={() => handleClick("Current Account Settings")} style={{ cursor: "pointer" }} className='custom-card'>
+          <Card onClick={() => handleClick("4")} style={{ cursor: "pointer" }} className='custom-card'>
           <Card.Body>
               <Row className="align-items-center">
                 <Col>
