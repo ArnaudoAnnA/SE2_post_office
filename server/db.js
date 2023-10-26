@@ -202,7 +202,7 @@ module.exports.get_assigned_clients = () =>
     connection.execute(query, (err, result) =>
     {
       if (err) {reject(err); return}
-      console.log(result)
+      console.log('Refreshing assigned clients');
       const assignedClients = result.map(row => ({
         clientNumber: row.clientNumber,
         serviceType: row.serviceType,
