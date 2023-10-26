@@ -32,3 +32,29 @@ content-type: application/json
 ### GET CLIENTS ASSIGNED TO A COUNTER
 
 GET http://localhost:3000/API/get_assigned_clients HTTP/1.1
+content-type: application/json
+
+#Response body example
+
+[
+  {
+    "clientNumber": 1,
+    "serviceType": "Accounts Management",
+    "counterID": 2
+  },
+  {
+    "clientNumber": 3,
+    "serviceType": "Bills",
+    "counterID": 1
+  },
+  {
+    "clientNumber": 4,
+    "serviceType": "Current Account Service",
+    "counterID": 3
+  },
+  {
+    "clientNumber": 14,
+    "serviceType": "Bills",
+    "counterID": 7
+  }
+]
