@@ -54,9 +54,7 @@ sections:
 - Estimated Hours Standard deviation: 3h 28m
 - Actual Hours Standard deviation: 3h 49m
 
-- Total task estimation error ratio: 49h / 49h 50m = 0,983m 
-
-[sum of total hours estimation / sum of total hours spent - 1]
+- Total task estimation error ratio [sum of total hours estimation / sum of total hours spent - 1]: 49h / 49h 50m = 0,983 
 
   
 ## QUALITY MEASURES 
